@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predicted Disease</title>
+    <style>
+        *{
+            margin: 0px;
+            padding: 0px;
+            box-sizing: border-box;
+        }
+        .container{
+            border: 1px solid gray;
+            margin: auto;
+            width: 90vw;
+            padding: 5px;
+            text-align: justify;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+
+            margin-top: 30px;
+        }
+        .container>h1{
+            border: 1px groove green;
+            padding: 10px;
+            padding-bottom: 15px;
+            background: rgb(227, 226, 229);
+            color: rgb(141, 15, 15);
+        }
+        .container>h3{
+            border: 1px groove green;
+            padding: 10px;
+            padding-bottom: 15px;
+            background: rgb(227, 226, 229);
+            color: darkred;
+        }
+        .container>p{
+            background:rgb(227, 226, 229);
+            padding: 5px;
+            color: rgb(75, 73, 73);
+        }
+        /*===================================*/
+         /*---------------------------------------------nav*/
+         nav{
+            display: flex;
+            flex-flow: wrap;
+            list-style: none;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-weight: bold;
+            position: sticky;
+            top: 1px;
+        }
+        nav>li>a,nav>li{
+            border: 1px solid transparent;
+            padding: 10px;
+            text-decoration: none;
+            margin: 1px;
+            color: white;
+            background: darkslategrey;
+        }
+        nav>li::first-letter{
+            color: rgb(0, 0, 0);
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <li><a href="/">Home</a></li>
+        <li><a href="#" id="hidebtn" onclick="hide()">Features</a></li>
+        <li><a href="#">Linkedin</a></li>
+        <li><a href="#">GitHub</a></li>
+    </nav>
+    
+<div class="container">
+    <h1>{{pred}}</h1>
+    <h3>According to the given data you have '{{pred}}'</h3><p>Predicted Result</p></div>
+
+</body>
+</html>

@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Human Disease Prediction</title>
+    <style>
+        *{
+            margin: 0px;
+            padding: 0px;
+            box-sizing: border-box;
+        }
+        body{
+            background-color: darkslategrey;
+        }
+        ::-webkit-scrollbar{
+            display: none;
+        }
+        /*---------------------------------------------nav*/
+        nav{
+            display: flex;
+            flex-flow: wrap;
+            list-style: none;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-weight: bold;
+            position: sticky;
+            top: 1px;
+        }
+        nav>li>a,nav>li{
+            border: 1px solid transparent;
+            padding: 10px;
+            text-decoration: none;
+            margin: 1px;
+            color: white;
+            background: darkslategrey;
+        }
+        nav>li::first-letter{
+            color: rgb(0, 0, 0);
+            font-weight: bold;
+        }
+        h1::first-letter{
+            color: rgb(0, 0, 0);
+        }
+        h1,p{
+            text-align: center;
+            color: rgb(255, 255, 255);
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            text-transform: capitalize;
+            margin: 10px;
+        }
+        p{
+            font-size: 1.3rem;
+        }
+        /*------------------------------------------------------------------Form*/
+        #form_disease{
+            padding: 10px;
+            text-align: center;
+            justify-content: center;
+            margin-bottom: 90px;
+            margin-top: 50px;
+        }
+        #form_disease>div{
+            display: flex;
+            flex-flow: wrap;
+            text-transform: capitalize;
+            width: 100vw;
+            align-items: center;
+            text-align: center;
+            justify-content: center;
+            
+        }
+        #form_disease>div>div{
+            border: 2px groove green;
+            font-variant: small-caps;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            color: white;
+            background: gray;
+            margin: 2px 1px;
+            padding: 4px;
+            width: 306px;
+            text-align: center;
+        }
+        #form_disease>div>div::first-letter{
+            color: rgb(5, 92, 10);
+            font-weight: bold;
+        }
+        #form_disease>div>div>select{
+            outline: none;
+            width: 50px;
+            border: 1px solid rgb(252, 255, 252);
+            background: transparent;
+            color: rgb(11, 17, 63);
+            font-weight: bold;
+            text-transform: capitalize;
+        }
+        #form_disease>div>div>select>option{
+            background: rgb(255, 255, 255);
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-variant: small-caps;
+            color: blueviolet;
+            text-transform: lowercase;
+            font-size: 1.5rem;
+        }
+        /*------------------------------------------------------------------------------------submit*/
+        form>button{
+            padding: 7px 30px;
+            font-weight: bold;
+            color: darkslategrey;
+            font-variant: small-caps;
+            letter-spacing: 1px;
+            margin-top: 30px;
+        }
+        /*====================================================footer*/
+        footer{
+            border: 1px solid rgb(99, 99, 99);
+            padding: 20px;
+            color: gray;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+    </style>
+    <!-- Side Drop -->
+    <style>
+        /* -------------------------------------------------------------------reset values */
+
+        /* -----------------------------------------------------------------------alertbox css */
+        .alertbox {
+            position: fixed;
+            border: 1px solid rgb(201, 201, 201);
+            padding: 10px;
+            right: -290px;
+            top: 10px;
+            width: 300px;
+            height: 98vh;
+            overflow-y: scroll;
+            border-right: none;
+            background: white;
+            z-index: 2;
+
+        }
+        /* --------------------------------------------------------animation property */
+        @keyframes alertbox {
+            from{
+                /* background-color: black; */
+                right: -200px;
+            }
+            to{
+                /* background-color: whitesmoke; */
+                right: 3px;
+            }
+        }
+        @keyframes alertbox2 {
+            from{
+                /* background-color: black; */
+                right: 3px;
+            }
+            to{
+                /* background-color: whitesmoke; */
+                right: -290px;
+            }
+        }
+
+        .alertboxs {
+            width: 100%;
+            border: 1px solid gray;
+            padding: 10px;
+            border-left: transparent;
+            border-right: transparent;
+            margin: auto;
+            margin-top: 1px;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        #alertbox1 {
+            background-color: rgb(123, 123, 133);
+            color: white;
+            cursor: pointer;
+        }
+
+        #alertbox1:hover {
+            border: 1px solid black;
+            background-color: whitesmoke;
+            color: blue;
+
+        }
+
+        /* --------------------------------------------------------scroll bar */
+        /* width */
+        #alertbox::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        /* Track */
+        #alertbox::-webkit-scrollbar-track {
+            box-shadow: inset 0 0 5px rgb(70, 69, 69);
+            border-radius: 10px;
+            max-height: 50px;
+        }
+
+        /* Handle */
+        #alertbox::-webkit-scrollbar-thumb {
+            border: 1px solid rgb(92, 92, 92);
+            border-radius: 50px;
+            box-shadow: -3px 2px 10px gray;
+            background: url('./gymback.avif') no-repeat center center/cover;
+        }
+
+        #alertbox::-webkit-scrollbar-button {
+            border-radius: 10px;
+            background: url('./gymback.avif') no-repeat center center/cover;
+
+        }
+
+        /* ------------------------------------------------------------------------responsive */
+        @media screen and (min-width: 0px) and (max-width:310px) {
+            .alertbox {
+            width: 100vw;
+        }
+        }
+
+
+    </style>
+    <!-- Side Drop -->
+</head>
+<body>
+    <!-- side drop -->
+    <div class="alertbox" draggable="true" id="alertbox">
+        <div id="alertbox1" class="alertboxs" onclick="hide2()">Exit Features</div>
+        <div id="alertbox2" class="alertboxs">Human Disease Prediction Machine Learning Advance Model</div>
+        <div id="alertbox3" class="alertboxs">Model can Predict only these types of Homun Disease.</div>
+        <div id="alertbox4" class="alertboxs">['Fungal infection', 'Allergy', 'GERD', 'Chronic cholestasis',
+            'Drug Reaction', 'Peptic ulcer diseae', 'AIDS', 'Diabetes ',
+            'Gastroenteritis', 'Bronchial Asthma', 'Hypertension ', 'Migraine',
+            'Cervical spondylosis', 'Paralysis (brain hemorrhage)', 'Jaundice',
+            'Malaria', 'Chicken pox', 'Dengue', 'Typhoid', 'hepatitis A',
+            'Hepatitis B', 'Hepatitis C', 'Hepatitis D', 'Hepatitis E',
+            'Alcoholic hepatitis', 'Tuberculosis', 'Common Cold', 'Pneumonia',
+            'Dimorphic hemmorhoids(piles)', 'Heart attack', 'Varicose veins',
+            'Hypothyroidism', 'Hyperthyroidism', 'Hypoglycemia',
+            'Osteoarthristis', 'Arthritis',
+            '(vertigo) Paroymsal  Positional Vertigo', 'Acne',
+            'Urinary tract infection', 'Psoriasis', 'Impetigo']</div>
+    </div><div id="img1">
+    
+    <!-- side drop -->
+    <nav>
+        <li><a href="/">Home</a></li>
+        <li><a href="#" id="hidebtn" onclick="hide()">Features</a></li>
+        <li><a href="#">Linkedin</a></li>
+        <li><a href="#">GitHub</a></li>
+    </nav>
+    
+    <h1> <span class="span">Human</span> <span class="span">Disease</span> <span class="span">Pridiction</span>  </h1>
+    <p>If you have these types of problems , Check the yes value.</p>
+    <form action="/predict" method="post" id="form_disease">
+        <div>
+            <div>
+                <label for="inplabel1">itching</label>
+                <select name="inp1" id="inplabel1">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel2">skin_rash</label>
+                <select name="inp2" id="inplabel2">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel3">nodal_skin_eruptions</label>
+                <select name="inp3" id="inplabel3">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel4">continuous_sneezing</label>
+                <select name="inp4" id="inplabel4">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel5">shivering</label>
+                <select name="inp5" id="inplabel5">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel6">chills</label>
+                <select name="inp6" id="inplabel6">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel7">joint_pain</label>
+                <select name="inp7" id="inplabel7">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel8">stomach_pain</label>
+                <select name="inp8" id="inplabel8">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel9">acidity</label>
+                <select name="inp9" id="inplabel9">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel10">ulcers_on_tongue</label>
+                <select name="inp10" id="inplabel10">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel11">muscle_wasting</label>
+                <select name="inp11" id="inplabel11">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel12">vomiting</label>
+                <select name="inp12" id="inplabel12">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel13">burning_micturition</label>
+                <select name="inp13" id="inplabel13">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel14">spotting_ urination</label>
+                <select name="inp14" id="inplabel14">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel15">fatigue</label>
+                <select name="inp15" id="inplabel15">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel16">weight_gain</label>
+                <select name="inp16" id="inplabel16">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel17">anxiety</label>
+                <select name="inp17" id="inplabel17">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel18">cold_hands_and_feets</label>
+                <select name="inp18" id="inplabel18">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel19">mood_swings</label>
+                <select name="inp19" id="inplabel19">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel20">weight_loss</label>
+                <select name="inp20" id="inplabel20">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel21">restlessness</label>
+                <select name="inp21" id="inplabel21">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel22">lethargy</label>
+                <select name="inp22" id="inplabel22">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel23">patches_in_throat</label>
+                <select name="inp23" id="inplabel23">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel24">irregular_sugar_level</label>
+                <select name="inp24" id="inplabel24">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel25">cough</label>
+                <select name="inp25" id="inplabel25">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel26">high_fever</label>
+                <select name="inp26" id="inplabel26">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel27">sunken_eyes</label>
+                <select name="inp27" id="inplabel27">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel28">breathlessness</label>
+                <select name="inp28" id="inplabel28">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel29">sweating</label>
+                <select name="inp29" id="inplabel29">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel30">dehydration</label>
+                <select name="inp30" id="inplabel30">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel31">indigestion</label>
+                <select name="inp31" id="inplabel31">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel32">headache</label>
+                <select name="inp32" id="inplabel32">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel33">yellowish_skin</label>
+                <select name="inp33" id="inplabel33">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel34">dark_urine</label>
+                <select name="inp34" id="inplabel34">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel35">nausea</label>
+                <select name="inp35" id="inplabel35">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel36">loss_of_appetite</label>
+                <select name="inp36" id="inplabel36">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel37">pain_behind_the_eyes</label>
+                <select name="inp37" id="inplabel37">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel38">back_pain</label>
+                <select name="inp38" id="inplabel38">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel39">constipation</label>
+                <select name="inp39" id="inplabel39">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel40">abdominal_pain</label>
+                <select name="inp40" id="inplabel40">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel41">diarrhoea</label>
+                <select name="inp41" id="inplabel41">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel42">mild_fever</label>
+                <select name="inp42" id="inplabel42">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel43">yellow_urine</label>
+                <select name="inp43" id="inplabel43">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel44">yellowing_of_eyes</label>
+                <select name="inp44" id="inplabel44">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel45">acute_liver_failure</label>
+                <select name="inp45" id="inplabel45">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel46">swelling_of_stomach</label>
+                <select name="inp46" id="inplabel46">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel47">swelled_lymph_nodes</label>
+                <select name="inp47" id="inplabel47">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel48">malaise</label>
+                <select name="inp48" id="inplabel48">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel49">blurred_and_distorted_vision</label>
+                <select name="inp49" id="inplabel49">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel50">phlegm</label>
+                <select name="inp50" id="inplabel50">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel51">throat_irritation</label>
+                <select name="inp51" id="inplabel51">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel52">redness_of_eyes</label>
+                <select name="inp52" id="inplabel52">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel53">sinus_pressure</label>
+                <select name="inp53" id="inplabel53">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel54">runny_nose</label>
+                <select name="inp54" id="inplabel54">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel55">congestion</label>
+                <select name="inp55" id="inplabel55">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel56">chest_pain</label>
+                <select name="inp56" id="inplabel56">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel57">weakness_in_limbs</label>
+                <select name="inp57" id="inplabel57">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel58">fast_heart_rate</label>
+                <select name="inp58" id="inplabel58">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel59">pain_during_bowel_movements</label>
+                <select name="inp59" id="inplabel59">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel60">pain_in_anal_region</label>
+                <select name="inp60" id="inplabel60">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel61">bloody_stool</label>
+                <select name="inp61" id="inplabel61">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel62">irritation_in_anus</label>
+                <select name="inp62" id="inplabel62">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel63">neck_pain</label>
+                <select name="inp63" id="inplabel63">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel64">dizziness</label>
+                <select name="inp64" id="inplabel64">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel65">cramps</label>
+                <select name="inp65" id="inplabel65">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel66">bruising</label>
+                <select name="inp66" id="inplabel66">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel67">obesity</label>
+                <select name="inp67" id="inplabel67">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel68">swollen_legs</label>
+                <select name="inp68" id="inplabel68">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel69">swollen_blood_vessels</label>
+                <select name="inp69" id="inplabel69">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel70">puffy_face_and_eyes</label>
+                <select name="inp70" id="inplabel70">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel71">enlarged_thyroid</label>
+                <select name="inp71" id="inplabel71">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel72">brittle_nails</label>
+                <select name="inp72" id="inplabel72">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel73">swollen_extremeties</label>
+                <select name="inp73" id="inplabel73">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel74">excessive_hunger</label>
+                <select name="inp74" id="inplabel74">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel75">extra_marital_contacts</label>
+                <select name="inp75" id="inplabel75">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel76">drying_and_tingling_lips</label>
+                <select name="inp76" id="inplabel76">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel77">slurred_speech</label>
+                <select name="inp77" id="inplabel77">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel78">knee_pain</label>
+                <select name="inp78" id="inplabel78">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel79">hip_joint_pain</label>
+                <select name="inp79" id="inplabel79">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel80">muscle_weakness</label>
+                <select name="inp80" id="inplabel80">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel81">stiff_neck</label>
+                <select name="inp81" id="inplabel81">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel82">swelling_joints</label>
+                <select name="inp82" id="inplabel82">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel83">movement_stiffness</label>
+                <select name="inp83" id="inplabel83">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel84">spinning_movements</label>
+                <select name="inp84" id="inplabel84">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel85">loss_of_balance</label>
+                <select name="inp85" id="inplabel85">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel86">unsteadiness</label>
+                <select name="inp86" id="inplabel86">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel87">weakness_of_one_body_side</label>
+                <select name="inp87" id="inplabel87">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel88">loss_of_smell</label>
+                <select name="inp88" id="inplabel88">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel89">bladder_discomfort</label>
+                <select name="inp89" id="inplabel89">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel90">foul_smell_of urine</label>
+                <select name="inp90" id="inplabel90">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel91">continuous_feel_of_urine</label>
+                <select name="inp91" id="inplabel91">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel92">passage_of_gases</label>
+                <select name="inp92" id="inplabel92">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel93">internal_itching</label>
+                <select name="inp93" id="inplabel93">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel94">toxic_look_(typhos)</label>
+                <select name="inp94" id="inplabel94">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel95">depression</label>
+                <select name="inp95" id="inplabel95">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel96">irritability</label>
+                <select name="inp96" id="inplabel96">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel97">muscle_pain</label>
+                <select name="inp97" id="inplabel97">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel98">altered_sensorium</label>
+                <select name="inp98" id="inplabel98">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel99">red_spots_over_body</label>
+                <select name="inp99" id="inplabel99">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel100">belly_pain</label>
+                <select name="inp100" id="inplabel100">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel101">abnormal_menstruation</label>
+                <select name="inp101" id="inplabel101">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel102">dischromic _patches</label>
+                <select name="inp102" id="inplabel102">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel103">watering_from_eyes</label>
+                <select name="inp103" id="inplabel103">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel104">increased_appetite</label>
+                <select name="inp104" id="inplabel104">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel105">polyuria</label>
+                <select name="inp105" id="inplabel105">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel106">family_history</label>
+                <select name="inp106" id="inplabel106">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel107">mucoid_sputum</label>
+                <select name="inp107" id="inplabel107">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel108">rusty_sputum</label>
+                <select name="inp108" id="inplabel108">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel109">lack_of_concentration</label>
+                <select name="inp109" id="inplabel109">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel110">visual_disturbances</label>
+                <select name="inp110" id="inplabel110">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel111">receiving_blood_transfusion</label>
+                <select name="inp111" id="inplabel111">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel112">receiving_unsterile_injections</label>
+                <select name="inp112" id="inplabel112">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel113">coma</label>
+                <select name="inp113" id="inplabel113">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel114">stomach_bleeding</label>
+                <select name="inp114" id="inplabel114">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel115">distention_of_abdomen</label>
+                <select name="inp115" id="inplabel115">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel116">history_of_alcohol_consumption</label>
+                <select name="inp116" id="inplabel116">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel117">fluid_overload.1</label>
+                <select name="inp117" id="inplabel117">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel118">blood_in_sputum</label>
+                <select name="inp118" id="inplabel118">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel119">prominent_veins_on_calf</label>
+                <select name="inp119" id="inplabel119">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel120">palpitations</label>
+                <select name="inp120" id="inplabel120">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel121">painful_walking</label>
+                <select name="inp121" id="inplabel121">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel122">pus_filled_pimples</label>
+                <select name="inp122" id="inplabel122">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel123">blackheads</label>
+                <select name="inp123" id="inplabel123">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel124">scurring</label>
+                <select name="inp124" id="inplabel124">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel125">skin_peeling</label>
+                <select name="inp125" id="inplabel125">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel126">silver_like_dusting</label>
+                <select name="inp126" id="inplabel126">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel127">small_dents_in_nails</label>
+                <select name="inp127" id="inplabel127">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel128">inflammatory_nails</label>
+                <select name="inp128" id="inplabel128">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel129">blister</label>
+                <select name="inp129" id="inplabel129">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel130">red_sore_around_nose</label>
+                <select name="inp130" id="inplabel130">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        <div>
+                <label for="inplabel131">yellow_crust_ooze</label>
+                <select name="inp131" id="inplabel131">
+                    <option value="no">No</option>
+                    <option value="yes">yes</option>
+                </select></div>
+        </div>
+        <button type="submit">Predict</button>
+    </form>
+    <footer>@RAM ( ram.dsbusiness@gmail.com ) || Copywrite Claim 2024</footer>
+</div>
+</body>
+<!-- side drop  -->
+<script>
+    let alertbox = document.querySelector('.alertbox');
+    let backimg = document.querySelector('#img1');
+
+    function hide() {
+        if (alertbox.style.visibility = 'hidden') {
+            alertbox.style.visibility = 'visible'
+            backimg.style.filter = 'blur(8px)'
+            
+            backimg.style.zIndex = '1'
+            alertbox.style.animation = 'alertbox 1s ease 0s 1 forwards'
+            
+            // z-index: -1;
+            // filter: blur(8px);
+        };
+    };
+    function hide2() {
+        if (alertbox.style.visibility = 'visible') {
+            backimg.style.filter = 'blur(0px)'
+            backimg.style.zIndex = '-1'
+            alertbox.style.animation = 'alertbox2 1.2s ease 0s 1 forwards'
+        };
+    };
+
+</script>
+<!-- side drop  -->
+</html>
